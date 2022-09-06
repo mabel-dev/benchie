@@ -1,0 +1,7 @@
+statements:
+  - SELECT * FROM $planets
+  - SELECT * FROM $planets WHERE name = "Earth"
+  - SELECT * FROM $planets WHERE name LIKE "Earth"
+  - SELECT * FROM $planets WHERE id = 1
+  - SELECT * FROM $planets WHERE name STARTS_WITH(name, "E")
+  - SELECT * FROM $planets WHERE name LIKE "E%"
