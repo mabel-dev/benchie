@@ -1,6 +1,6 @@
-# Benchie
+# Wrenchy Bench
 
-Benchie provides benchmarking and baselining capabilities for Opteryx.
+Wrenchy Bench provides benchmarking and baselining capabilities for Opteryx.
 
 ----
 
