@@ -10,12 +10,11 @@ Wrenchy Bench provides benchmarking and baselining capabilities for Opteryx.
 
 Benchmarks performance by running queries many times to measure the execution times.
 
-## Planned
-
-
 **Correctness**
 
-Benchmarks correctness by comparing results of a set of statements against MySQL's response to the same query.
+Benchmarks correctness by comparing results of a set of statements against Sqlite's response to the same query.
+
+## Planned
 
 **Memory Consumption**
 
