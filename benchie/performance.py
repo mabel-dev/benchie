@@ -18,11 +18,14 @@ cache = InMemoryKVStore(size=25)
 
 
 def time_function(func, cycles:int=1000, *args):
+    # monotonic_ms has the lowest overhead
     timings = [0] * cycles
     for index in range(cycles):
-        start = time.perf_counter_ns()
+        start = time.monotonic_ns()
         func(*args)
-        timings[index] = time.perf_counter_ns() - start
+        timings[index] = time.monotonic_ns() - start
+        print(".", end="")
+    print()
     return numpy.array(timings, dtype=numpy.int64)
 
 def execute_query(statement):
@@ -30,8 +33,8 @@ def execute_query(statement):
     cur = conn.cursor()
     cur.execute(statement)
     # this should be the fastest way to force the query to exec to completion
-    cur.to_arrow()
-    print(cur.stats)
+    cur.as_arrow()
+    #print(cur.stats)
 
 def reject_outliers(data, m = 3):
     d = numpy.abs(data - numpy.median(data))
@@ -65,20 +68,16 @@ if __name__ == "__main__":
     # opteryx.bulk
     # mabel_data
 
-    CYCLES = 10
+    CYCLES = 1000
     SQL = "SELECT COUNT(user_verified) FROM opteryx.bulk WITH(NO_PARTITION) WHERE user_verified IS TRUE"
+    SQL = "SELECT * FROM $satellites -- GROUP BY planetId"
 
     r = time_function(execute_query, CYCLES, SQL)
     min_time, max_time = r.min(), r.max()
 
-    # remove outliers
-    if len(r) > 100:
-        r = reject_outliers(r)
-        q25, q75 = numpy.percentile(r, [25, 75])
-        bin_width = 2 * (q75 - q25) * len(r) ** (-1/3)
-        bins = max(round((r.max() - r.min()) / bin_width), 5)
-    else:
-        q25, q75, bins = 0, 0, 5
+    q25, p50, q75, p95, p99 = numpy.percentile(r, [25, 50, 75, 95, 99])
+    bin_width = 2 * (q75 - q25) * len(r) ** (-1/3)
+    bins = max(round((r.max() - r.min()) / bin_width), 5)
 
     # Creating histogram
     fig, ax = plt.subplots(figsize =(10, 7))
@@ -93,6 +92,9 @@ if __name__ == "__main__":
         "min": numpy.min(r)/1e9,
         "max": numpy.max(r)/1e9,
         "iqr": (q75-q25)/1e9,
+        "p50": p50/1e9,
+        "p95": p95/1e9,
+        "p99": p99/1e9,
         "std_dev": numpy.std(r)/1e9
         }
 
