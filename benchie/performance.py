@@ -8,7 +8,7 @@ import json
 import logging
 import time
 
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 import numpy
 import opteryx
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     CYCLES = 1000
     SQL = "SELECT COUNT(user_verified) FROM opteryx.bulk WITH(NO_PARTITION) WHERE user_verified IS TRUE"
-    SQL = "SELECT * FROM $satellites -- GROUP BY planetId"
+    SQL = "SELECT random() FROM $satellites -- GROUP BY planetId"
 
     r = time_function(execute_query, CYCLES, SQL)
     min_time, max_time = r.min(), r.max()
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     bins = max(round((r.max() - r.min()) / bin_width), 5)
 
     # Creating histogram
-    fig, ax = plt.subplots(figsize =(10, 7))
+#    fig, ax = plt.subplots(figsize =(10, 7))
 
     event = {
         "timestamp": datetime.datetime.now().isoformat(),
@@ -101,6 +101,6 @@ if __name__ == "__main__":
     log_results(event)
     show_results(event)
 
-    plt.hist(r, bins=bins)
+#    plt.hist(r, bins=bins)
     # Show plot
     #plt.show()

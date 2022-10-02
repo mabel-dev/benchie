@@ -1,0 +1,11 @@
+SELECT 4 > 5;
+SELECT 4 < 5;
+SELECT 4 = 5;
+SELECT 4 <> 5;
+SELECT * FROM $planets ORDER BY id;
+SELECT * FROM $planets;
+SELECT AVG(id) FROM $planets;
+SELECT SUM(id) FROM $planets;
+SELECT MIN(id) FROM $planets;
+SELECT MAX(id) FROM $planets;
+SELECT COUNT(*), gravity FROM $planets GROUP BY gravity;
