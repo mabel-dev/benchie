@@ -1,6 +1,6 @@
 # Wrenchy Bench
 
-Wrenchy Bench provides benchmarking and baselining capabilities for Opteryx.
+Wrenchy Bench provides benchmarking and baselining capabilities for [Opteryx](https://github.com/mabel-dev/opteryx).
 
 ----
 
@@ -12,7 +12,7 @@ Benchmarks performance by running queries many times to measure the execution ti
 
 **Correctness**
 
-Benchmarks correctness by comparing results of a set of statements against Sqlite's response to the same query.
+Benchmarks correctness by comparing results of a set of statements against DuckDB's response to the same query.
 
 ## Planned
 

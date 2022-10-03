@@ -33,7 +33,7 @@ def execute_query(statement):
     cur = conn.cursor()
     cur.execute(statement)
     # this should be the fastest way to force the query to exec to completion
-    cur.as_arrow()
+    cur.arrow()
     #print(cur.stats)
 
 def reject_outliers(data, m = 3):
