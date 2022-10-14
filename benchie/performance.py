@@ -24,7 +24,7 @@ def time_function(func, cycles:int=1000, *args):
         start = time.monotonic_ns()
         func(*args)
         timings[index] = time.monotonic_ns() - start
-        print(".", end="")
+        print(".", end="", flush=True)
     print()
     return numpy.array(timings, dtype=numpy.int64)
 
@@ -68,9 +68,10 @@ if __name__ == "__main__":
     # opteryx.bulk
     # mabel_data
 
-    CYCLES = 1000
-    SQL = "SELECT COUNT(user_verified) FROM opteryx.bulk WITH(NO_PARTITION) WHERE user_verified IS TRUE"
-    SQL = "SELECT random() FROM $satellites -- GROUP BY planetId"
+    CYCLES = 100
+    SQL = "SET enable_optimizer = true; SELECT COUNT(*) FROM $satellites WITH(NO_PARTITION) WHERE NOT id <> 25"
+    #SQL = "SELECT random() FROM $satellites -- GROUP BY planetId"
+    #SQL = "SELECT * FROM FAKE(10, 10)"
 
     r = time_function(execute_query, CYCLES, SQL)
     min_time, max_time = r.min(), r.max()

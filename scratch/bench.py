@@ -4,7 +4,7 @@ from functools import wraps
 
 import numpy
  
-loops = 1000000
+loops = 10000
  
 def measure(func):
     @wraps(func)
@@ -19,8 +19,42 @@ def measure(func):
     return wrapper
  
 if __name__ == '__main__':
-    for func in (time.monotonic_ns, time.monotonic, time.perf_counter, time.process_time, time.time):
-        measure(func)()
+
+    import os
+    import sys
+
+    sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
+
+    import random
+    import datetime
+    from opteryx.third_party.date_trunc import date_trunc
+
+    def noop(n):
+        return n
+
+    def random_string(unit, date):
+        seconds = date.timestamp()
+        seconds = 3600 * (seconds // 3600)
+        return date.fromtimestamp(seconds)
+
+    def random_string2(unit, date):
+        seconds = date.timestamp()
+        seconds = seconds - (seconds % 3600)
+
+        return date.fromtimestamp(seconds)
+
+    def random_string3(unit, date):
+        seconds = date.timestamp()
+        seconds, rem = divmod(seconds, 3600)
+
+        return date.fromtimestamp(seconds * 3600)
+
+
+    #for func in (time.monotonic_ns, time.monotonic, time.perf_counter, time.process_time, time.time):
+    for func in (date_trunc, random_string2, random_string, random_string3):
+        measure(func)("hour", datetime.datetime.utcnow())
+
+    print(date_trunc("week", datetime.datetime.utcnow()))
 
 """
 CITYHASH WINS
@@ -35,4 +69,13 @@ MONOTONIC_NS WINS
 50%   0.1630ms, 95%   0.2480ms, 99%   0.2990ms, 99.99%   8.4830ms,  1000000 cycles of perf_counter
 50%   0.3120ms, 95%   0.3800ms, 99%   0.5320ms, 99.99%  16.6380ms,  1000000 cycles of process_time
 50%   0.1630ms, 95%   0.1890ms, 99%   0.2270ms, 99.99%   1.7080ms,  1000000 cycles of time
+
+RANDOM.GETRANDBITS WINS
+50%   0.1840ms, 95%   0.2570ms, 99%   0.3270ms, 99.99%   5.0570ms,  1000000 cycles of random.getrandbits(16)
+50%   1.0330ms, 95%   1.1250ms, 99%   1.4220ms, 99.99%  18.3190ms,  1000000 cycles of os.urandom(2)
+50%   7.0530ms, 95%   8.2820ms, 99%  13.9220ms, 99.99% 106.2970ms,  1000000 cycles of numpy.random.bytes(2)
+
+MAP WINS
+50%  86.8710ms, 95% 101.9470ms, 99% 120.6632ms, 99.99% 615.2880ms,  100000 cycles of comprehension
+50%  61.4150ms, 95%  75.3643ms, 99%  90.9310ms, 99.99% 435.3975ms,  100000 cycles of list(map)
 """

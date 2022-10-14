@@ -10,13 +10,13 @@ answer to every query - so some explainable failures may be present.
 """
 import os
 import sys
-from unittest import result
 
 sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
 
-from functools import reduce
+import datetime
+import decimal
 
-import orjson
+from functools import reduce
 
 from cityhash import CityHash64
 
@@ -55,8 +55,15 @@ def hash_the_table(table):
 
     seed = 7097667599182356662
 
+    def conv(i):
+        if isinstance(i, (float, decimal.Decimal)):
+            return str(int(i))
+        if isinstance(i, datetime.datetime):
+            return i.date().isoformat()
+        return str(i)
+
     def inner(row):  
-        hashes = map(CityHash64, map(str, row))
+        hashes = map(CityHash64, map(conv, row))
         hashed = reduce(lambda x, y: x ^ y, hashes)
         return hashed
 
@@ -116,7 +123,10 @@ def main():
             end="",
         )
         start = time.monotonic_ns()
-        examplar_result = execute_statement(exemplar, sql.replace("$planets", "'data/planets/planets.parquet'"))
+        exemplar_sql = sql
+        exemplar_sql = exemplar_sql.replace("$planets", "'data/planets/planets.parquet'")
+        exemplar_sql = exemplar_sql.replace("$astronauts", "'data/astronauts/astronauts.parquet'")
+        examplar_result = execute_statement(exemplar, exemplar_sql)
         print(f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m", end="  ")
         start = time.monotonic_ns()
         subject_result = execute_statement(subject, sql)
@@ -126,6 +136,10 @@ def main():
             print("✅")
         else:
             print("❌")
+            print(f"\033[0;34mEXEMPLAR ({len(examplar_result)})\033[0m")
+            print(examplar_result)
+            print(f"\033[0;32mSUBJECT ({len(subject_result)})\033[0m")
+            print(subject_result)
 
 
 if __name__ == "__main__":
