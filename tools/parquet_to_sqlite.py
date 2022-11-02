@@ -9,11 +9,12 @@ import sqlite3
 TYPES = {
     "int64": "INTEGER",
     "string": "TEXT",
-    "double": "REAL", 
+    "double": "REAL",
 }
 
+
 def _derive_create(name, parq):
-    """ derive the CREATE statement for this parquet file """
+    """derive the CREATE statement for this parquet file"""
     schema = parq.schema
     sql = f"CREATE TABLE {name} (\n"
     fields = []
@@ -23,14 +24,14 @@ def _derive_create(name, parq):
     sql += "\n); "
     return sql
 
+
 def _insert_values(name, parq):
-    
     def _escape(values):
         for value in values:
             if isinstance(value, str):
                 yield f'"{value}"'
             elif value is None:
-                yield 'NULL'
+                yield "NULL"
             else:
                 yield str(value)
 
@@ -46,7 +47,7 @@ def _get_dataset(dataset):
 
     if dataset == "planets":
         return opteryx.samples.planets()
-    
+
 
 if __name__ == "__main__":
 

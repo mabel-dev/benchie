@@ -20,6 +20,7 @@ from functools import reduce
 
 from cityhash import CityHash64
 
+
 def get_tests():
     import glob
 
@@ -31,6 +32,7 @@ def get_tests():
                 for line in test_file.read().splitlines()
                 if len(line) > 0 and line[0] != "#"
             ]
+
 
 def execute_statement(connection, statement):
     """
@@ -62,7 +64,7 @@ def hash_the_table(table):
             return i.date().isoformat()
         return str(i)
 
-    def inner(row):  
+    def inner(row):
         hashes = map(CityHash64, map(conv, row))
         hashed = reduce(lambda x, y: x ^ y, hashes)
         return hashed
@@ -85,7 +87,7 @@ def compare_results(results_opteryx, results_external):
     """
 
     # CHECK THE ROW COUNTS MATCH
-#    len(results_opteryx) == len(results_external), f"Row count mismatch: {len(results_opteryx)} != {len(results_external)}"
+    #    len(results_opteryx) == len(results_external), f"Row count mismatch: {len(results_opteryx)} != {len(results_external)}"
 
     if len(results_opteryx) == 0:
         # there's no data to test
@@ -96,12 +98,14 @@ def compare_results(results_opteryx, results_external):
     first_opteryx = results_opteryx[0]
     first_external = results_external[0]
 
-#    assert set(first_opteryx.keys()) == set(first_external.keys()), f"Column name mismatch: {first_opteryx.keys()} vs {first_external.keys()}"
+    #    assert set(first_opteryx.keys()) == set(first_external.keys()), f"Column name mismatch: {first_opteryx.keys()} vs {first_external.keys()}"
 
     # CHECK THE VALUES HASHS MATCH
     opteryx_hash = hash_the_table(results_opteryx)
     external_hash = hash_the_table(results_external)
-    return opteryx_hash == external_hash  #, f"Data hash mismatch\n{results_external}\n{results_opteryx}"
+    return (
+        opteryx_hash == external_hash
+    )  # , f"Data hash mismatch\n{results_external}\n{results_opteryx}"
 
 
 def main():
@@ -116,7 +120,10 @@ def main():
 
     width = shutil.get_terminal_size((80, 20))[0] - 24
 
-    print("\033[4;36mID  \033[0m \033[4;37mStatement".ljust(width) + "                      \033[0m \033[4;33mDuckDB\033[0m \033[4;34mOpteryx\033[0m")
+    print(
+        "\033[4;36mID  \033[0m \033[4;37mStatement".ljust(width)
+        + "                      \033[0m \033[4;33mDuckDB\033[0m \033[4;34mOpteryx\033[0m"
+    )
     for index, sql in enumerate(get_tests()):
         print(
             f"\033[0;36m{(index + 1):04}\033[0m {sql[0:width - 1].ljust(width)}",
@@ -124,13 +131,23 @@ def main():
         )
         start = time.monotonic_ns()
         exemplar_sql = sql
-        exemplar_sql = exemplar_sql.replace("$planets", "'data/planets/planets.parquet'")
-        exemplar_sql = exemplar_sql.replace("$astronauts", "'data/astronauts/astronauts.parquet'")
+        exemplar_sql = exemplar_sql.replace(
+            "$planets", "'data/planets/planets.parquet'"
+        )
+        exemplar_sql = exemplar_sql.replace(
+            "$astronauts", "'data/astronauts/astronauts.parquet'"
+        )
         examplar_result = execute_statement(exemplar, exemplar_sql)
-        print(f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m", end="  ")
+        print(
+            f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",
+            end="  ",
+        )
         start = time.monotonic_ns()
         subject_result = execute_statement(subject, sql)
-        print(f"\033[0;34m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m", end="  ")
+        print(
+            f"\033[0;34m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",
+            end="  ",
+        )
         passed = compare_results(subject_result, examplar_result)
         if passed:
             print("✅")
