@@ -4,7 +4,7 @@ from functools import wraps
 
 import numpy
 
-loops = 10000
+loops = 100000
 
 
 def measure(func):
@@ -36,34 +36,14 @@ if __name__ == "__main__":
     sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
 
     import random
-    import datetime
-    from opteryx.third_party.date_trunc import date_trunc
 
     def noop(n):
         return n
 
-    def random_string(unit, date):
-        seconds = date.timestamp()
-        seconds = 3600 * (seconds // 3600)
-        return date.fromtimestamp(seconds)
-
-    def random_string2(unit, date):
-        seconds = date.timestamp()
-        seconds = seconds - (seconds % 3600)
-
-        return date.fromtimestamp(seconds)
-
-    def random_string3(unit, date):
-        seconds = date.timestamp()
-        seconds, rem = divmod(seconds, 3600)
-
-        return date.fromtimestamp(seconds * 3600)
 
     # for func in (time.monotonic_ns, time.monotonic, time.perf_counter, time.process_time, time.time):
-    for func in (date_trunc, random_string2, random_string, random_string3):
-        measure(func)("hour", datetime.datetime.utcnow())
-
-    print(date_trunc("week", datetime.datetime.utcnow()))
+    for func in (lambda x: random.random(), os.urandom, random.getrandbits):
+        measure(func)(8)
 
 """
 CITYHASH WINS

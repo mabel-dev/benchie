@@ -43,3 +43,5 @@ SELECT BOOLEAN FROM (SELECT False AS BOOLEAN);
 SELECT 1 != null;
 SELECT NOT 1 = null;
 SELECT death_date != '1990-04-06 00:00:00', death_date FROM $astronauts WHERE death_date != '2022-01-01';
+
+SELECT CASE id WHEN 3 THEN 'Earth' WHEN 1 THEN 'Mercury' ELSE 'Elsewhere' END FROM $planets;
