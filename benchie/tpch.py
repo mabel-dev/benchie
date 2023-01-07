@@ -56,7 +56,9 @@ def main():
         try:
             subject_result = execute_statement(subject, sql)
             passed = True
-        except:
+        except Exception as err:
+            if False:
+                print(err)
             passed = False
         print(
             f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",

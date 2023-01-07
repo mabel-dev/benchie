@@ -1,4 +1,7 @@
--- drop view q2_min_ps_supplycost;
+/* 
+Opteryx syntax changes
+- view definitions changed to CTE
+*/
 with q2_min_ps_supplycost as
 (select
     p_partkey as min_p_partkey,

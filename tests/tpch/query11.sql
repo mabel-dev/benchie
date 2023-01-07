@@ -1,3 +1,8 @@
+/* 
+Opteryx syntax changes
+- view definitions changed to CTE
+*/
+
 with q11_part_tmp_cached as
 (select
     ps_partkey,
