@@ -40,7 +40,7 @@ def execute_statement(connection, statement):
     """
     cur = connection.cursor()
     cur.execute(statement)
-    result = list(cur.fetchall())
+    result = cur.arrow()
     return result
 
 
@@ -131,6 +131,9 @@ def main():
         )
         start = time.monotonic_ns()
         exemplar_sql = sql
+        exemplar_sql = exemplar_sql.replace(
+            "parquet", "'parquet/*.parquet'"
+        )
         exemplar_sql = exemplar_sql.replace(
             "$planets", "'data/planets/planets.parquet'"
         )

@@ -50,7 +50,7 @@ def main():
     )
     start = time.monotonic_ns()
 
-    print(f"\033[0;DUCKDB ({len(examplar_result)})\033[0m")
+    print(f"\033[0mDUCKDB ({len(examplar_result)})\033[0m")
     print(examplar_result)
 
 

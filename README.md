@@ -25,3 +25,7 @@ https://github.com/pythonprofilers/memory_profiler
 this is intended to assist with debugging performance issues.
 
 https://github.com/pyutils/line_profiler
+
+----
+
+https://github.com/tripl-ai/tpch, MIT Licence
