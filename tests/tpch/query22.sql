@@ -7,29 +7,29 @@ with q22_customer_tmp_cached as
 (select
     c_acctbal,
     c_custkey,
-    substr(c_phone, 1, 2) as cntrycode
+    substring(c_phone, 1, 2) as cntrycode
 from
     data.tpch.customer
 where
-    substr(c_phone, 1, 2) = '13' or
-    substr(c_phone, 1, 2) = '31' or
-    substr(c_phone, 1, 2) = '23' or
-    substr(c_phone, 1, 2) = '29' or
-    substr(c_phone, 1, 2) = '30' or
-    substr(c_phone, 1, 2) = '18' or
-    substr(c_phone, 1, 2) = '17'
-)
+    substring(c_phone, 1, 2) = '13' or
+    substring(c_phone, 1, 2) = '31' or
+    substring(c_phone, 1, 2) = '23' or
+    substring(c_phone, 1, 2) = '29' or
+    substring(c_phone, 1, 2) = '30' or
+    substring(c_phone, 1, 2) = '18' or
+    substring(c_phone, 1, 2) = '17'
+),
  
-with q22_customer_tmp1_cached as
+q22_customer_tmp1_cached as
 (select
     avg(c_acctbal) as avg_acctbal
 from
     q22_customer_tmp_cached
 where
     c_acctbal > 0.00
-)
+),
 
-with q22_orders_tmp_cached as
+q22_orders_tmp_cached as
 (select
     o_custkey
 from

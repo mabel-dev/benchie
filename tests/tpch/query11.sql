@@ -17,7 +17,7 @@ where
     and n_name = 'GERMANY'
 group by ps_partkey)
 
-with q11_sum_tmp_cached as
+, q11_sum_tmp_cached as
 (select
     sum(part_value) as total_value
 from

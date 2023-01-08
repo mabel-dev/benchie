@@ -3,7 +3,7 @@ Opteryx syntax changes
 - temporary table definition changed to CTE
 */
 
-with l3 orc as 
+with l3 as 
 (select l_orderkey, count(distinct l_suppkey) as cntSupp
 from data.tpch.lineitem
 where l_receiptdate > l_commitdate and l_orderkey is not null
@@ -11,7 +11,7 @@ group by l_orderkey
 having cntSupp = 1
 )
 
-with location as (
+, location as (
 select supplier.* from data.tpch.supplier, data.tpch.nation where
 s_nationkey = n_nationkey and n_name = 'SAUDI ARABIA'
 )

@@ -13,7 +13,7 @@ where
     and l_shipdate < '1996-04-01'
 group by l_suppkey)
 
-with max_revenue_cached as
+, max_revenue_cached as
 (select
     max(total_revenue) as max_revenue
 from
