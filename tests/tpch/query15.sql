@@ -17,7 +17,7 @@ group by l_suppkey)
 (select
     max(total_revenue) as max_revenue
 from
-    data.tpch.revenue_cached)
+    revenue_cached)
 
 select
     s_suppkey,

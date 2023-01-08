@@ -41,27 +41,27 @@ def main():
     import time
     import shutil
 
-    width = shutil.get_terminal_size((80, 20))[0] - 16
+    width = shutil.get_terminal_size((80, 20))[0] - 46
 
     print(
-        "\033[4;36mID  \033[0m \033[4;37mTest".ljust(width)
-        + "                      \033[0m \033[4;34mResult    \033[0m"
+        "\033[4;36mID  \033[0m \033[4;37mTest".ljust(width + 46)
+        + "  \033[0m \033[4;34mResult      \033[0m"
     )
     for index, (name, sql) in enumerate(get_tests()):
         print(
-            f"\033[0;36m{(index + 1):04}\033[0m {name[0:width - 1].ljust(width)}",
+            f"\033[0;36m{(index + 1):04}\033[0m {name.ljust(26)}",
             end="",
         )
         start = time.monotonic_ns()
         try:
             subject_result = execute_statement(subject, sql)
+            print(" " * width, end="")
             passed = True
         except Exception as err:
-            if False:
-                print(err)
+            print("\033[0;31m" + str(err)[0:width].ljust(width), end="")
             passed = False
         print(
-            f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",
+            f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(6)}ms\033[0m",
             end="  ",
         )
         if passed:

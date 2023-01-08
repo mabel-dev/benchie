@@ -15,7 +15,7 @@ where
         select
             s_suppkey
         from
-            supplier
+            data.tpch.supplier
         where
             s_comment like '%Customer%Complaints%'
     )

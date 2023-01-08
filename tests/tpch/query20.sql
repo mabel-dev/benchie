@@ -10,7 +10,7 @@ tmp2 as (
 ),
 tmp3 as (
     select l_partkey, 0.5 * sum(l_quantity) as sum_quantity, l_suppkey
-    from ldata.tpch.ineitem, tmp2
+    from data.tpch.lineitem, tmp2
     where l_shipdate >= '1994-01-01' and l_shipdate <= '1995-01-01'
     and l_suppkey = s_suppkey 
     group by l_partkey, l_suppkey

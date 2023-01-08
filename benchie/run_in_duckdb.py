@@ -35,7 +35,7 @@ def main():
 
     width = shutil.get_terminal_size((80, 20))[0] - 24
 
-    sql = "SELECT CASE id WHEN 3 THEN 'Earth' WHEN 1 THEN 'Mercury' ELSE 'Elsewhere' END FROM $planets;"
+    sql = "SELECT * FROM $planets AS p JOIN $planets AS g ON p.id = g.id AND p.name = 'Earth';"
 
     start = time.monotonic_ns()
     exemplar_sql = sql
