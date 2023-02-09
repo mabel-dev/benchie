@@ -65,7 +65,6 @@ def show_results(results):
 
 
 if __name__ == "__main__":
-
     from opteryx.connectors import GcpCloudStorageConnector
     from opteryx.connectors import AwsS3Connector
 

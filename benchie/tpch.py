@@ -14,7 +14,6 @@ import sys
 sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
 
 
-
 def get_tests():
     import glob
 
@@ -22,6 +21,7 @@ def get_tests():
     for suite in suites:
         with open(suite, mode="r") as test_file:
             yield suite, test_file.read()
+
 
 def execute_statement(connection, statement):
     """

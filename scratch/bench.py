@@ -29,7 +29,6 @@ def measure(func):
 
 
 if __name__ == "__main__":
-
     import os
     import sys
 
@@ -39,7 +38,6 @@ if __name__ == "__main__":
 
     def noop(n):
         return n
-
 
     # for func in (time.monotonic_ns, time.monotonic, time.perf_counter, time.process_time, time.time):
     for func in (lambda x: random.random(), os.urandom, random.getrandbits):

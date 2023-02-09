@@ -50,7 +50,6 @@ def _get_dataset(dataset):
 
 
 if __name__ == "__main__":
-
     exemplar_datafile = "data/sqlite/exemplar.sqlite"
 
     datasets = ("planets",)
@@ -61,7 +60,6 @@ if __name__ == "__main__":
         pass
 
     for name in datasets:
-
         dataset = _get_dataset(name)
         create_statement = _derive_create(name, dataset)
 

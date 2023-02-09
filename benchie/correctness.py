@@ -131,9 +131,7 @@ def main():
         )
         start = time.monotonic_ns()
         exemplar_sql = sql
-        exemplar_sql = exemplar_sql.replace(
-            "parquet", "'parquet/*.parquet'"
-        )
+        exemplar_sql = exemplar_sql.replace("parquet", "'parquet/*.parquet'")
         exemplar_sql = exemplar_sql.replace(
             "$planets", "'data/planets/planets.parquet'"
         )
