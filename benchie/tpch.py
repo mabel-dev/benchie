@@ -38,8 +38,8 @@ def main():
 
     subject = opteryx.connect()
 
-    import time
     import shutil
+    import time
 
     width = shutil.get_terminal_size((80, 20))[0] - 46
 

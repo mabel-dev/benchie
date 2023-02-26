@@ -10,7 +10,6 @@ answer to every query - so some explainable failures may be present.
 """
 import datetime
 import decimal
-
 from functools import reduce
 
 from cityhash import CityHash64
@@ -30,19 +29,18 @@ def main():
 
     exemplar = duckdb.connect()
 
-    import time
     import shutil
+    import time
 
     width = shutil.get_terminal_size((80, 20))[0] - 24
 
     sql = "SELECT * FROM $planets AS p JOIN $planets AS g ON p.id = g.id AND p.name = 'Earth';"
+    sql = "SELECT * FROM $planets AS A JOIN $planets AS B ON A.gravity * 1 = B.gravity;"
 
     start = time.monotonic_ns()
     exemplar_sql = sql
     exemplar_sql = exemplar_sql.replace("$planets", "'data/planets/planets.parquet'")
-    exemplar_sql = exemplar_sql.replace(
-        "$astronauts", "'data/astronauts/astronauts.parquet'"
-    )
+    exemplar_sql = exemplar_sql.replace("$astronauts", "'data/astronauts/astronauts.parquet'")
     examplar_result = execute_statement(exemplar, exemplar_sql)
     print(
         f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",

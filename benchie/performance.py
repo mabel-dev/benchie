@@ -1,21 +1,21 @@
-import os
-import sys
-
-sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
-
 import datetime
 import json
 import logging
+import os
+import sys
 import time
+
+import numpy
+
+sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
+
+import opteryx
+from opteryx.managers.cache import MemoryCache
 
 # from matplotlib import pyplot as plt
 
-import numpy
-import opteryx
 
-from opteryx.managers.kvstores import InMemoryKVStore
-
-cache = InMemoryKVStore(size=25)
+cache = MemoryCache(size=25)
 
 
 def time_function(func, cycles: int = 1000, *args):
@@ -65,8 +65,8 @@ def show_results(results):
 
 
 if __name__ == "__main__":
-    from opteryx.connectors import GcpCloudStorageConnector
     from opteryx.connectors import AwsS3Connector
+    from opteryx.connectors import GcpCloudStorageConnector
 
     opteryx.register_store("mabel_data", GcpCloudStorageConnector)
     opteryx.register_store("opteryx", AwsS3Connector)

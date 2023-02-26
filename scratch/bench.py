@@ -1,8 +1,12 @@
+import os
+import sys
 import time
-
 from functools import wraps
 
 import numpy
+
+sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
+
 
 loops = 100000
 
@@ -16,12 +20,7 @@ def measure(func):
             func(*args, **kwargs)
             h.append((time.monotonic_ns() - start) / 1e3)
         print(
-            "".join(
-                [
-                    f"{n:2}% {numpy.percentile(h, n):8.4f}ms, "
-                    for n in [50, 95, 99, 99.99]
-                ]
-            ),
+            "".join([f"{n:2}% {numpy.percentile(h, n):8.4f}ms, " for n in [50, 95, 99, 99.99]]),
             f"{loops} cycles of {func.__name__}",
         )
 
@@ -39,9 +38,16 @@ if __name__ == "__main__":
     def noop(n):
         return n
 
+    import datetime
+
+    from bitarray import bitarray
+    from opteryx.utils.bitarry import bitarry as ba
+
+    now = datetime.datetime.utcnow()
+
     # for func in (time.monotonic_ns, time.monotonic, time.perf_counter, time.process_time, time.time):
-    for func in (lambda x: random.random(), os.urandom, random.getrandbits):
-        measure(func)(8)
+    for func in b:
+        measure(func)("month", now)
 
 """
 CITYHASH WINS

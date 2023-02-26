@@ -8,17 +8,15 @@ engine.
 No two SQL Engines are identical, there is no obsolute and universal 'correct'
 answer to every query - so some explainable failures may be present.
 """
-import os
-import sys
-
-sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
-
 import datetime
 import decimal
-
+import os
+import sys
 from functools import reduce
 
 from cityhash import CityHash64
+
+sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
 
 
 def get_tests():
@@ -28,9 +26,7 @@ def get_tests():
     for suite in suites:
         with open(suite, mode="r") as test_file:
             yield from [
-                line
-                for line in test_file.read().splitlines()
-                if len(line) > 0 and line[0] != "#"
+                line for line in test_file.read().splitlines() if len(line) > 0 and line[0] != "#"
             ]
 
 
@@ -115,8 +111,8 @@ def main():
     exemplar = duckdb.connect()
     subject = opteryx.connect()
 
-    import time
     import shutil
+    import time
 
     width = shutil.get_terminal_size((80, 20))[0] - 24
 
@@ -132,12 +128,8 @@ def main():
         start = time.monotonic_ns()
         exemplar_sql = sql
         exemplar_sql = exemplar_sql.replace("parquet", "'parquet/*.parquet'")
-        exemplar_sql = exemplar_sql.replace(
-            "$planets", "'data/planets/planets.parquet'"
-        )
-        exemplar_sql = exemplar_sql.replace(
-            "$astronauts", "'data/astronauts/astronauts.parquet'"
-        )
+        exemplar_sql = exemplar_sql.replace("$planets", "'data/planets/planets.parquet'")
+        exemplar_sql = exemplar_sql.replace("$astronauts", "'data/astronauts/astronauts.parquet'")
         examplar_result = execute_statement(exemplar, exemplar_sql)
         print(
             f"\033[0;33m{str(int((time.monotonic_ns() - start)/1000000)).rjust(4)}ms\033[0m",

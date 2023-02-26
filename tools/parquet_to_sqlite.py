@@ -1,9 +1,8 @@
 import os
+import sqlite3
 import sys
 
 sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
-
-import sqlite3
 
 
 TYPES = {
