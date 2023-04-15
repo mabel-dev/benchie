@@ -1,3 +1,5 @@
+USE opteryx;
+
 CREATE TABLE planets (
   id INT PRIMARY KEY,
   `name` VARCHAR(20),
@@ -11,7 +13,7 @@ CREATE TABLE planets (
   distanceFromSun DECIMAL(5, 1),
   perihelion DECIMAL(5, 1),
   aphelion DECIMAL(5, 1),
-  orbitalPeriod DECIMAL(5, 1),
+  orbitalPeriod DECIMAL(6, 1),
   orbitalVelocity DECIMAL(5, 1),
   orbitalInclination DECIMAL(5, 1),
   orbitalEccentricity DECIMAL(5, 3),
