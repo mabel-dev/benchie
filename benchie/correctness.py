@@ -14,10 +14,12 @@ import os
 import sys
 from functools import reduce
 
-from cityhash import CityHash64
+from orso.cityhash import CityHash64
 
 sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
 
+import opteryx
+print(opteryx.__version__)
 
 def get_tests():
     import glob

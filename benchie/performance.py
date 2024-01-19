@@ -75,8 +75,8 @@ if __name__ == "__main__":
     # opteryx.bulk
     # mabel_data
 
-    CYCLES = 100
-    SQL = "SET enable_optimizer = true; SELECT COUNT(*) FROM $satellites WITH(NO_PARTITION) WHERE NOT id <> 25"
+    CYCLES = 500
+    SQL = "SET disable_optimizer = false; SELECT COUNT(*) FROM $satellites WITH(NO_PARTITION) WHERE NOT id <> 25"
     # SQL = "SELECT random() FROM $satellites -- GROUP BY planetId"
     # SQL = "SELECT * FROM FAKE(10, 10)"
     # SQL = "SELECT COUNT(user_verified) FROM parquet WITH(NO_PARTITION) WHERE user_verified IS TRUE"

@@ -12,32 +12,26 @@ import os
 import sys
 
 sys.path.insert(1, os.path.join(sys.path[0], "../../opteryx"))
-
+import opteryx
 
 def get_tests():
     import glob
 
-    suites = glob.glob(f"**/tpch/**.sql", recursive=True)
+    suites = glob.glob(f"**/tpch/query22.sql", recursive=True)
     for suite in suites:
         with open(suite, mode="r") as test_file:
             yield suite, test_file.read()
 
 
-def execute_statement(connection, statement):
+def execute_statement(statement):
     """
     Using DBAPI, we cna wrap Opteryx and an external DB
     """
-    cur = connection.cursor()
-    cur.execute(statement)
-    result = cur.arrow()
+    result = opteryx.query(statement)
     return result
 
 
 def main():
-    import opteryx
-
-    subject = opteryx.connect()
-
     import shutil
     import time
 
@@ -54,7 +48,7 @@ def main():
         )
         start = time.monotonic_ns()
         try:
-            subject_result = execute_statement(subject, sql)
+            subject_result = execute_statement(sql)
             print(" " * width, end="")
             passed = True
         except Exception as err:
@@ -66,6 +60,7 @@ def main():
         )
         if passed:
             print("✅")
+            print(subject_result)
         else:
             print("❌")
 
